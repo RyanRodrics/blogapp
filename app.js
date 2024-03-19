@@ -55,12 +55,12 @@ mongoose.Promise = global.Promise;
 }).catch((err) =>{
     console.log("Erro ao se conectar ao mongo" + err);
 });*/
+// "mongodb+srv://ryanadmin:Ryan_1534@blogapp0.utg9jid.mongodb.net/"
+const dbUrl = process.env.DB_KEY;
 const connectDatabase = () =>{
     console.log("Esperando conectar com atlas...");
 
-    mongoose.connect(
-        "mongodb+srv://ryanadmin:Ryan_1534@blogapp0.utg9jid.mongodb.net/"
-    ).then(() =>{
+    mongoose.connect("mongodb+srv://ryanadmin:Ryan_1534@blogapp0.utg9jid.mongodb.net/").then(() =>{
         console.log("Conectado com o atlas ");
     }).catch((error) =>{
         console.log("Erro ao conectar com o atlas: " + error);
@@ -73,8 +73,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 // Rotas
-app.get('/', (req, res) =>{
-    Postagem.find().lean().populate("categoria").sort({date: 'desc'}).then((postagens) =>{
+app.get('/', async (req, res) =>{
+    await Postagem.find().lean().populate("categoria").sort({date: 'desc'}).then((postagens) =>{
         res.render("index", {postagens})
     }).catch((err) =>{
         req.flash('error_msg', "Houve um erro ao listar as postagens");
