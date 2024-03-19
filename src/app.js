@@ -3,17 +3,17 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 //const bodyParser = require('body-parser');
 import mongoose from 'mongoose';
-import admin from './routes/admin.js';
-import usuarios from './routes/usuario.js';
+import admin from '../routes/admin.js';
+import usuarios from '../routes/usuario.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import session from 'express-session';
 import flash from 'connect-flash';
-import  "./models/Postagem.js";
-import "./models/Categorias.js";
+import  "../models/Postagem.js";
+import "../models/Categorias.js";
 import passport from 'passport';
-import auth from './config/auth.js';
+import auth from '../config/auth.js';
 auth(passport);
 const Postagem = mongoose.model("postagens");
 const Categoria = mongoose.model("categorias");
@@ -43,11 +43,12 @@ app.use((req, res , next) =>{
     next();
 });
 // Handlebars
-app.engine('handlebars', engine({defaultLayout: 'main', runtimeOptions: {
-    allowProtoPropertiesBydefault: true, allowProtoMethodsByDefault: true
-}}));
+app.engine('handlebars', engine({ 
+    defaultLayout: 'main', 
+    layoutsDir: path.join(__dirname, "views", "layouts")
+}));
 app.set('view engine', 'handlebars');
-app.set('views', './views');
+app.set('views', path.join(__dirname, "views"));
 //Mongoose
 mongoose.Promise = global.Promise;
 /*mongoose.connect("mongodb://localhost/blogapp").then(() =>{
@@ -68,7 +69,7 @@ const connectDatabase = () =>{
 };
 connectDatabase();
 // Public
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname + '../../' + 'public'));
 
 
 
