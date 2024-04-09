@@ -15,6 +15,7 @@ import "../models/Categorias.js";
 import passport from 'passport';
 import auth from '../config/auth.js';
 auth(passport);
+
 const Postagem = mongoose.model("postagens");
 const Categoria = mongoose.model("categorias");
 const app = express();
